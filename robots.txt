@@ -1,0 +1,26 @@
+# robots.txt for PM-KISAN Policy Intelligence Report
+# Host: helixoriginator.github.io
+# Project: pm-kisan-policy-intelligence-report
+
+User-agent: *
+Allow: /
+
+# Allow crawling of main report and assets
+Allow: /index.html
+Allow: /README.md
+Allow: /sitemap.xml
+
+# Block unnecessary bot access to system files
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /package.json
+Disallow: /package-lock.json
+
+# Respect crawl rate for GitHub Pages
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://helixoriginator.github.io/pm-kisan-policy-intelligence-report/sitemap.xml
+
+# Note: This is a static research report. 
+# All public content is intended for indexing and academic discovery.
