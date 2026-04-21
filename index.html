@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PM-KISAN | Deep Policy Intelligence Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0d0c0a;
+      --paper: #f5f0e8;
+      --paper-alt: #ede8dc;
+      --paper-dark: #d9d2c2;
+      --red: #c0392b;
+      --red-dark: #922b21;
+      --gold: #b7860b;
+      --gold-light: #d4a017;
+      --teal: #1a6b6b;
+      --blue-gov: #1a3a5c;
+      --muted: #6b6456;
+      --muted-light: #9c9284;
+      --rule: #c9bfaa;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Libre Baskerville', Georgia, serif;
+      --font-mono: 'DM Mono', 'Courier New', monospace;
+      --font-cond: 'Barlow Condensed', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ─── MASTHEAD ─── */
+    .masthead {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .masthead-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 3rem;
+      border-bottom: 1px solid rgba(245,240,232,0.15);
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted-light);
+    }
+
+    .masthead-top .live-tag {
+      display: flex; align-items: center; gap: 0.4rem;
+      color: var(--gold-light);
+    }
+
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #e74c3c;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .masthead-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+    }
+
+    .masthead-text {
+      padding: 3rem 3rem 3rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid rgba(245,240,232,0.1);
+    }
+
+    .scheme-label {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+    }
+
+    .masthead-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      color: var(--paper);
+      margin-bottom: 0.5rem;
+    }
+
+    .masthead-title span { color: var(--gold-light); font-style: italic; }
+
+    .masthead-subtitle {
+      font-family: var(--font-cond);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: var(--muted-light);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .masthead-lead {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: rgba(245,240,232,0.75);
+      line-height: 1.8;
+      max-width: 480px;
+      border-left: 3px solid var(--gold);
+      padding-left: 1.2rem;
+    }
+
+    .masthead-stats {
+      padding: 3rem;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+    }
+
+    .hero-stat:last-child { border-bottom: none; }
+
+    .hero-stat-val {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 700;
+      color: var(--paper);
+      line-height: 1;
+    }
+
+    .hero-stat-val span { color: var(--gold-light); }
+
+    .hero-stat-label {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      margin-top: 0.3rem;
+    }
+
+    .hero-stat-sub {
+      font-size: 0.78rem;
+      color: rgba(245,240,232,0.45);
+      font-family: var(--font-mono);
+      margin-top: 0.2rem;
+    }
+
+    /* ─── RED BAND ─── */
+    .red-band {
+      background: var(--red);
+      padding: 0.9rem 3rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      overflow: hidden;
+    }
+
+    .red-band-label {
+      font-family: var(--font-cond);
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      white-space: nowrap;
+    }
+
+    .red-band-ticker {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #fff;
+      white-space: nowrap;
+      animation: ticker 30s linear infinite;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .main-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ─── SECTION CHROME ─── */
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 3.5rem 0 2rem;
+    }
+
+    .section-rule-num {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      background: var(--paper);
+      white-space: nowrap;
+    }
+
+    .section-rule-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--red) 0%, var(--rule) 60%, transparent 100%);
+    }
+
+    .section-rule-title {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ─── PULLQUOTE ─── */
+    .pullquote {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--blue-gov);
+      border-left: 5px solid var(--gold);
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      background: var(--paper-alt);
+    }
+
+    .pullquote cite {
+      display: block;
+      font-style: normal;
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.8rem;
+    }
+
+    /* ─── FACT BOX ─── */
+    .fact-box {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 1.5rem;
+      border-radius: 0;
+      position: relative;
+      margin: 1.5rem 0;
+    }
+
+    .fact-box::before {
+      content: 'FACT';
+      position: absolute;
+      top: -0.6rem;
+      left: 1.2rem;
+      background: var(--red);
+      color: #fff;
+      font-family: var(--font-cond);
+      font-weight: 800;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      padding: 0.1rem 0.5rem;
+    }
+
+    .fact-box p {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.85);
+    }
+
+    /* ─── PROSE SECTIONS ─── */
+    .prose {
+      column-count: 2;
+      column-gap: 3rem;
+      column-rule: 1px solid var(--rule);
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: #2a2420;
+    }
+
+    .prose p { margin-bottom: 1rem; }
+
+    .prose-single {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: #2a2420;
+    }
+
+    .prose-single p { margin-bottom: 1rem; }
+
+    .drop-cap::first-letter {
+      float: left;
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 900;
+      line-height: 0.8;
+      margin: 0.1rem 0.2rem -0.1rem 0;
+      color: var(--red);
+    }
+
+    /* ─── ANIMATED KPI CARDS ─── */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 2px solid var(--ink);
+      margin: 2rem 0;
+    }
+
+    .kpi-card {
+      padding: 1.5rem;
+      border-right: 1px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+      cursor: default;
+    }
+
+    .kpi-card:last-child { border-right: none; }
+
+    .kpi-card:hover { background: var(--ink); }
+    .kpi-card:hover .kpi-val, .kpi-card:hover .kpi-label, .kpi-card:hover .kpi-sub { color: var(--paper) !important; }
+    .kpi-card:hover .kpi-accent { color: var(--gold-light) !important; }
+
+    .kpi-val {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+      transition: color 0.3s;
+    }
+
+    .kpi-accent { color: var(--red); transition: color 0.3s; }
+
+    .kpi-label {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      transition: color 0.3s;
+    }
+
+    .kpi-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted-light);
+      margin-top: 0.2rem;
+      transition: color 0.3s;
+    }
+
+    .kpi-bar {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      background: var(--red);
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline {
+      position: relative;
+      padding: 1rem 0;
+      margin: 1rem 0 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 120px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--rule);
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.8rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+    .tl-date {
+      width: 120px;
+      flex-shrink: 0;
+      padding-right: 1.5rem;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding-top: 0.15rem;
+    }
+
+    .tl-dot-wrap {
+      width: 0;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 0.3rem;
+    }
+
+    .tl-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 2.5px solid var(--red);
+      flex-shrink: 0;
+      margin-left: -7px;
+      transition: background 0.3s;
+    }
+
+    .tl-item:hover .tl-dot { background: var(--red); }
+
+    .tl-content {
+      padding-left: 2rem;
+      flex: 1;
+    }
+
+    .tl-title {
+      font-family: var(--font-cond);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      color: var(--ink);
+      text-transform: uppercase;
+    }
+
+    .tl-body {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 0.2rem;
+    }
+
+    .tl-badge {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      margin-right: 0.4rem;
+    }
+
+    .tl-milestone { background: rgba(192,57,43,0.12); color: var(--red); }
+    .tl-reform { background: rgba(26,107,107,0.12); color: var(--teal); }
+    .tl-budget { background: rgba(183,134,11,0.12); color: var(--gold); }
+    .tl-audit { background: rgba(26,58,92,0.12); color: var(--blue-gov); }
+
+    /* ─── SCORING RADAR ─── */
+    .scoring-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .radar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    canvas#radarChart {
+      max-width: 340px;
+    }
+
+    .score-legend {
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .score-row-label {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      width: 150px;
+      flex-shrink: 0;
+    }
+
+    .score-track {
+      flex: 1;
+      height: 5px;
+      background: var(--paper-dark);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .score-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink);
+      width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .score-card-total {
+      background: var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .score-card-total .val {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .score-card-total .val small {
+      font-size: 1.5rem;
+      color: var(--muted-light);
+    }
+
+    .score-card-total .grade {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-top: 0.4rem;
+    }
+
+    .score-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .score-detail-item {
+      border-left: 3px solid var(--rule);
+      padding: 0.8rem 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .score-detail-item:hover { border-color: var(--red); }
+
+    .score-detail-label {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .score-detail-score {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0.1rem 0;
+    }
+
+    .score-detail-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ─── COMPARISON TABLE ─── */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .comp-table th {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border: 1px solid var(--ink);
+    }
+
+    .comp-table td {
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--rule);
+      vertical-align: top;
+      line-height: 1.5;
+      color: #2a2420;
+    }
+
+    .comp-table tr:nth-child(even) td { background: var(--paper-alt); }
+    .comp-table tr:hover td { background: var(--paper-dark); }
+
+    .comp-table td strong {
+      font-family: var(--font-cond);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      margin-top: 0.3rem;
+    }
+
+    .tag-comp { background: rgba(26,107,107,0.12); color: var(--teal); border: 1px solid rgba(26,107,107,0.25); }
+    .tag-gap { background: rgba(183,134,11,0.12); color: var(--gold); border: 1px solid rgba(183,134,11,0.25); }
+    .tag-risk { background: rgba(192,57,43,0.12); color: var(--red); border: 1px solid rgba(192,57,43,0.25); }
+    .tag-neutral { background: rgba(26,58,92,0.12); color: var(--blue-gov); border: 1px solid rgba(26,58,92,0.25); }
+
+    /* ─── DEBATE BOX ─── */
+    .debate-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 2px solid var(--ink);
+      margin: 2rem 0;
+    }
+
+    .debate-col {
+      padding: 2rem;
+    }
+
+    .debate-col:first-child {
+      border-right: 2px solid var(--ink);
+      background: rgba(16,185,129,0.04);
+    }
+
+    .debate-col:last-child {
+      background: rgba(239,68,68,0.04);
+    }
+
+    .debate-header {
+      font-family: var(--font-cond);
+      font-weight: 900;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .debate-col:first-child .debate-header { color: var(--teal); border-color: var(--teal); }
+    .debate-col:last-child .debate-header { color: var(--red); border-color: var(--red); }
+
+    .debate-item {
+      font-size: 0.88rem;
+      color: #2a2420;
+      line-height: 1.6;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .debate-item:last-child { border-bottom: none; }
+
+    .debate-icon { flex-shrink: 0; font-size: 0.9rem; }
+
+    /* ─── POLICY RECS ─── */
+    .recs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--ink);
+      border: 2px solid var(--ink);
+      margin: 1.5rem 0;
+    }
+
+    .rec-card {
+      background: var(--paper);
+      padding: 1.5rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .rec-card:hover { background: var(--paper-alt); }
+
+    .rec-num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--rule);
+      line-height: 1;
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+    }
+
+    .rec-priority {
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .priority-high { color: var(--red); }
+    .priority-med { color: var(--gold); }
+    .priority-low { color: var(--teal); }
+
+    .rec-title {
+      font-family: var(--font-cond);
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .rec-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── COMPARISON GLOBAL ─── */
+    .global-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin: 1.5rem 0;
+    }
+
+    .global-table th {
+      background: var(--blue-gov);
+      color: var(--paper);
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    .global-table td {
+      padding: 0.7rem 0.8rem;
+      border-bottom: 1px solid var(--rule);
+      color: #2a2420;
+      vertical-align: top;
+    }
+
+    .global-table tr:hover td { background: var(--paper-alt); }
+
+    .country-flag {
+      font-size: 1.1rem;
+      margin-right: 0.3rem;
+    }
+
+    /* ─── DATA DEEP DIVE ─── */
+    .dataviz-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .dvb-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dvb-label {
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      width: 80px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .dvb-track {
+      flex: 1;
+      height: 28px;
+      background: var(--paper-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dvb-fill {
+      height: 100%;
+      background: var(--ink);
+      width: 0;
+      transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .dvb-fill::after {
+      content: attr(data-val);
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--paper);
+      white-space: nowrap;
+    }
+
+    .dvb-alt .dvb-fill { background: var(--red); }
+    .dvb-alt2 .dvb-fill { background: var(--teal); }
+    .dvb-alt3 .dvb-fill { background: var(--gold); }
+
+    /* ─── STATE PERFORMANCE MAP ─── */
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      margin: 1.5rem 0;
+    }
+
+    .state-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      border: 1px solid var(--paper-dark);
+      cursor: default;
+      transition: transform 0.2s;
+      position: relative;
+    }
+
+    .state-cell:hover {
+      transform: scale(1.1);
+      z-index: 10;
+      border-color: var(--ink);
+    }
+
+    .state-cell .sname {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .state-cell .sval {
+      font-size: 0.6rem;
+      margin-top: 1px;
+    }
+
+    /* ─── FOOTNOTES ─── */
+    .sources-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 2rem;
+      margin: 1rem 0;
+    }
+
+    .source-item {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .src-num {
+      color: var(--red);
+      flex-shrink: 0;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 3rem;
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(245,240,232,0.12);
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--paper);
+      line-height: 1;
+    }
+
+    .footer-brand span { color: var(--gold-light); font-style: italic; }
+
+    .footer-desc {
+      font-size: 0.82rem;
+      color: var(--muted-light);
+      margin-top: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      font-size: 0.8rem;
+      color: var(--muted-light);
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(245,240,232,0.06);
+      font-family: var(--font-mono);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-bottom p {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted-light);
+    }
+
+    .creator-credit {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--gold-light);
+      border-top: 1px solid rgba(183,134,11,0.3);
+      padding-top: 0.5rem;
+      margin-top: 0.3rem;
+    }
+
+    .creator-role {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      margin-top: 0.2rem;
+    }
+
+    /* ─── STICKY NAV ─── */
+    .toc-nav {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 500;
+    }
+
+    .toc-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--rule);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .toc-dot:hover, .toc-dot.active {
+      background: var(--red);
+      transform: scale(1.5);
+    }
+
+    .toc-dot:hover::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      white-space: nowrap;
+    }
+
+    /* ─── DIVIDERS ─── */
+    .ornamental-divider {
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--rule);
+      margin: 2.5rem 0;
+      letter-spacing: 0.5rem;
+    }
+
+    /* ─── EXCLUSION DIAGRAM ─── */
+    .exclusion-diagram {
+      display: flex;
+      gap: 0;
+      margin: 1.5rem 0;
+      border: 2px solid var(--ink);
+      overflow: hidden;
+    }
+
+    .excl-col {
+      flex: 1;
+      padding: 1.2rem;
+      border-right: 1px solid var(--ink);
+    }
+
+    .excl-col:last-child { border-right: none; }
+
+    .excl-header {
+      font-family: var(--font-cond);
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid;
+    }
+
+    .excl-col.green .excl-header { color: var(--teal); border-color: var(--teal); background: rgba(26,107,107,0.06); margin: -1.2rem -1.2rem 1rem; padding: 0.8rem 1.2rem; }
+    .excl-col.amber .excl-header { color: var(--gold); border-color: var(--gold); background: rgba(183,134,11,0.06); margin: -1.2rem -1.2rem 1rem; padding: 0.8rem 1.2rem; }
+    .excl-col.red-c .excl-header { color: var(--red); border-color: var(--red); background: rgba(192,57,43,0.06); margin: -1.2rem -1.2rem 1rem; padding: 0.8rem 1.2rem; }
+
+    .excl-list { list-style: none; }
+    .excl-list li {
+      font-size: 0.8rem;
+      color: #2a2420;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--rule);
+      line-height: 1.5;
+    }
+
+    /* ─── ANIMATE ON SCROLL ─── */
+    .aos {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.7s ease;
+    }
+
+    .aos.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .masthead-hero { grid-template-columns: 1fr; }
+      .masthead-stats { grid-template-rows: none; grid-template-columns: repeat(3,1fr); gap: 0; }
+      .masthead-text { border-right: none; border-bottom: 1px solid rgba(245,240,232,0.1); }
+      .hero-stat { border-bottom: 1px solid rgba(245,240,232,0.08); border-right: 1px solid rgba(245,240,232,0.08); }
+      .prose { column-count: 1; }
+      .kpi-strip { grid-template-columns: repeat(2,1fr); }
+      .scoring-layout { grid-template-columns: 1fr; }
+      .debate-grid { grid-template-columns: 1fr; }
+      .debate-col:first-child { border-right: none; border-bottom: 2px solid var(--ink); }
+      .recs-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .global-table { font-size: 0.75rem; }
+      .masthead-top { padding: 0.6rem 1rem; }
+      .masthead-text { padding: 2rem 1.5rem; }
+      .masthead-stats { padding: 1.5rem; }
+      .main-wrapper { padding: 0 1rem; }
+      .state-grid { grid-template-columns: repeat(4, 1fr); }
+      .toc-nav { display: none; }
+      footer { padding: 2rem 1rem; }
+      .footer-bottom { flex-direction: column; }
+      .sources-grid { grid-template-columns: 1fr; }
+      .exclusion-diagram { flex-direction: column; }
+      .excl-col { border-right: none; border-bottom: 1px solid var(--ink); }
+    }
+
+    @media (max-width: 540px) {
+      .kpi-strip { grid-template-columns: 1fr 1fr; }
+      .recs-grid { grid-template-columns: 1fr; }
+      .scoring-layout, .debate-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STICKY TOC DOTS -->
+<nav class="toc-nav" aria-label="Section navigation">
+  <div class="toc-dot active" data-label="Overview" onclick="scrollTo('#masthead')"></div>
+  <div class="toc-dot" data-label="Context" onclick="scrollTo('#context')"></div>
+  <div class="toc-dot" data-label="Timeline" onclick="scrollTo('#timeline')"></div>
+  <div class="toc-dot" data-label="Financials" onclick="scrollTo('#financials')"></div>
+  <div class="toc-dot" data-label="Exclusions" onclick="scrollTo('#exclusions')"></div>
+  <div class="toc-dot" data-label="Scoring" onclick="scrollTo('#scoring')"></div>
+  <div class="toc-dot" data-label="Overlap" onclick="scrollTo('#overlap')"></div>
+  <div class="toc-dot" data-label="Global" onclick="scrollTo('#global')"></div>
+  <div class="toc-dot" data-label="Debate" onclick="scrollTo('#debate')"></div>
+  <div class="toc-dot" data-label="Recs" onclick="scrollTo('#recs')"></div>
+</nav>
+
+<!-- MASTHEAD -->
+<header class="masthead" id="masthead">
+  <div class="masthead-top">
+    <span>VOL. VII | CENTRAL SCHEME ANALYSIS | POLICY INTELLIGENCE UNIT</span>
+    <span class="live-tag"><span class="live-dot"></span> Updated: April 21, 2026</span>
+    <span>MINISTRY OF AGRICULTURE &amp; FARMERS WELFARE</span>
+  </div>
+
+  <div class="masthead-hero">
+    <div class="masthead-text">
+      <div class="scheme-label">■ Central Sector Scheme · Direct Income Support · India</div>
+      <h1 class="masthead-title">PM-<span>KISAN</span></h1>
+      <div class="masthead-subtitle">Pradhan Mantri Kisan Samman Nidhi · Deep Policy Intelligence Report</div>
+      <p class="masthead-lead">
+        A rigorous analytical dissection of India's flagship farmer income support programme — 
+        examining its architecture, fiscal footprint, structural exclusions, implementation mechanics, 
+        and contested impact across 7 years of operation.
+      </p>
+    </div>
+
+    <div class="masthead-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val"><span id="count-beneficiaries">0</span><span>Cr</span></div>
+        <div class="hero-stat-label">Farmer Families Enrolled</div>
+        <div class="hero-stat-sub">~90% of landholding families · as of Mar 2026</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">₹<span id="count-spent">0</span>L Cr</div>
+        <div class="hero-stat-label">Cumulative Expenditure</div>
+        <div class="hero-stat-sub">3.24 lakh crore released (Feb 2019–Dec 2024)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val"><span id="count-installments">0</span><span>+</span></div>
+        <div class="hero-stat-label">Installments Disbursed</div>
+        <div class="hero-stat-sub">Quarterly tripartite transfers via DBT · Aadhaar-seeded</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER BAND -->
+<div class="red-band">
+  <div class="red-band-label">Key Data</div>
+  <div class="red-band-ticker">
+    ₹6,000/yr per family in 3 installments of ₹2,000 &nbsp;·&nbsp; 100% Central Sector funding &nbsp;·&nbsp; DBT penetration >95% &nbsp;·&nbsp; ₹75,000 Cr BE for FY2025–26 &nbsp;·&nbsp; Tenant farmers excluded (≈30% cultivators) &nbsp;·&nbsp; Land record digitization gaps persist in 11 states &nbsp;·&nbsp; No inflation indexation since inception (2019) &nbsp;·&nbsp; MGNREGA does NOT cover same beneficiary pool &nbsp;·&nbsp; CAG Performance Audit (2022) flagged ₹1,364 Cr ineligible payments &nbsp;·&nbsp; ₹6,000/yr per family in 3 installments of ₹2,000 &nbsp;·&nbsp; 100% Central Sector funding &nbsp;·&nbsp; DBT penetration >95% &nbsp;·&nbsp;
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-wrapper">
+
+  <!-- CONTEXT -->
+  <div id="context">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 01</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Problem Context &amp; Policy Architecture</span>
+    </div>
+
+    <div class="kpi-strip" id="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-bar" data-width="78"></div>
+        <div class="kpi-val">78<span class="kpi-accent">%</span></div>
+        <div class="kpi-label">Small &amp; Marginal Farmers</div>
+        <div class="kpi-sub">Holdings &lt;2 hectares · NSSO/AgCensus 2019</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" data-width="70"></div>
+        <div class="kpi-val">₹<span class="kpi-accent">27</span>k</div>
+        <div class="kpi-label">Avg. Monthly Farm Income</div>
+        <div class="kpi-sub">Agri-holding family · NABARD NAFIS 2022</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" data-width="50"></div>
+        <div class="kpi-val"><span class="kpi-accent">50</span>%</div>
+        <div class="kpi-label">Formally Indebted Farmers</div>
+        <div class="kpi-sub">Avg. debt ₹74,121 per farming household</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" data-width="30"></div>
+        <div class="kpi-val"><span class="kpi-accent">30</span>%</div>
+        <div class="kpi-label">Tenant/Sharecropper Share</div>
+        <div class="kpi-sub">Of all cultivators · Excluded from PM-KISAN</div>
+      </div>
+    </div>
+
+    <div class="prose aos">
+      <p class="drop-cap">India's agrarian economy is characterized by a fundamental paradox: a sector employing 46% of the workforce contributes only 15–18% of GDP, while simultaneously sustaining near-chronic income instability among its practitioners. The proximate causes are well-documented — land fragmentation, monsoon volatility, input cost inflation, and thin access to institutional credit — but the structural roots lie deeper in the post-Green Revolution model's failure to deliver proportional income gains to smallholders who lack the irrigated acreage to benefit from procurement-linked policies.</p>
+      <p>PM-KISAN was designed as a departure from this paradigm. Instead of production-linked subsidies routed through intermediaries — fertilizer, water, power — it delivers cash directly to the household, theoretically decoupling farm welfare from output performance. The philosophical underpinning is borrowed from the literature on Universal Basic Income (UBI) pilots: unconditional income transfers create consumption smoothing, psychological security, and modest investment capacity without the market distortions of commodity-specific subsidies.</p>
+      <p>The scheme was announced in the Interim Union Budget of December 2018 under the tenure of Finance Minister Piyush Goyal, became operational in February 2019, and was formally expanded to all farmer families (removing the earlier 2-hectare ceiling) in June 2019. Its design is architecturally simple: three instalments of ₹2,000 each, paid quarterly, to all landholding farmer families subject to income and professional exclusions. The delivery vehicle is Direct Benefit Transfer (DBT), linked to Aadhaar-seeded bank accounts, with state governments responsible for beneficiary verification against land records.</p>
+      <p>This simplicity is both PM-KISAN's greatest strength and its most significant structural vulnerability. The absence of means-testing beyond a broad income threshold allows for wide coverage and low administrative overhead; the absolute dependence on land ownership records simultaneously creates a rigid structural exclusion of India's estimated 30% of cultivators who operate on rented or sharecropped land without formal title.</p>
+    </div>
+
+    <div class="pullquote aos">
+      "A flat ₹6,000 per year is neither designed nor sufficient to be a primary income source — it is a consumption floor. The policy question is whether that floor is set at the right level, and who falls beneath it."
+      <cite>— Analytical Inference from NITI Aayog Working Papers &amp; CAG Audit, 2022</cite>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div id="timeline">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 02</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Chronological Policy Ledger (2018–2026)</span>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Dec 2018</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-milestone">Milestone</span>Interim Budget Announcement</div>
+          <div class="tl-body">Finance Minister Piyush Goyal announces PM-KISAN targeting small &amp; marginal farmers with holdings ≤2 hectares. Allocation: ₹20,000 Cr for 2 months of FY 2018–19.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Feb 2019</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-milestone">Milestone</span>Operational Launch — First Installment</div>
+          <div class="tl-body">First installment (₹2,000) disbursed to ~1.01 crore farmers in Gorakhpur, UP by PM Modi. Digital DBT via Aadhaar-seeded accounts deployed from day one.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun 2019</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-reform">Reform</span>Universal Coverage Expansion</div>
+          <div class="tl-body">2-hectare ceiling removed. All landholding farmer families made eligible, expanding potential beneficiary pool from ~5 Cr to ~12.5 Cr families. Budget allocation revised upward to ₹75,000 Cr/year.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Aug 2020</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-reform">Reform</span>PM-KISAN Mobile App &amp; Self-Registration</div>
+          <div class="tl-body">Self-registration portal and mobile app launched. Farmers can register directly without state agriculture department mediation, significantly accelerating onboarding velocity.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Nov 2021</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-audit">Audit</span>CAG Performance Audit Flagged</div>
+          <div class="tl-body">CAG Report No. 20 (2021) flags ₹1,364 crore in payments to ineligible beneficiaries, including government employees, pensioners, and income tax payees. Deduplication drive initiated.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jan 2022</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-reform">Reform</span>e-KYC Mandate for Continuity</div>
+          <div class="tl-body">Annual e-KYC made mandatory for benefit continuity. Beneficiaries must authenticate via Aadhaar OTP or biometric at Common Service Centres (CSCs). ~2.5 Cr farmers temporarily suspended for non-compliance in early 2022.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">FY 2023–24</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-budget">Budget</span>Active Beneficiary Count Stabilizes</div>
+          <div class="tl-body">Active beneficiary count stabilizes at ~8–9 Cr after multiple deduplication drives. Budget Estimate maintained at ₹60,000 Cr; actual expenditure ₹54,735 Cr due to exclusions.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">FY 2025–26</div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-title"><span class="tl-badge tl-budget">Budget</span>Budget Estimate: ₹75,000 Crore</div>
+          <div class="tl-body">Budget Estimates of ₹75,000 Cr allocated. Government evaluates potential merger with PM-FASAL BIMA &amp; KCC for unified farmer welfare portal. No policy revision to benefit quantum announced; inflation adjustment still absent.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIALS -->
+  <div id="financials">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 03</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Fiscal Architecture &amp; Expenditure Analysis</span>
+    </div>
+
+    <div class="fact-box aos">
+      <p>PM-KISAN is classified as a <strong>Central Sector Scheme (100% Centre-funded)</strong>, unlike Centrally Sponsored Schemes which involve state cost-sharing. This means the entire ₹75,000 Cr annual outlay comes from the Consolidated Fund of India and requires no state matching — a design choice that ensures uniformity of coverage across fiscal-capacity-constrained states like Bihar and UP.</p>
+    </div>
+
+    <div class="prose-single aos">
+      <p>The scheme's annual budget of ₹75,000 crore represents approximately <strong>2.5% of the Union Budget</strong> and roughly <strong>0.3% of India's GDP</strong> at current estimates. In comparative terms, this is considerably smaller than the fertilizer subsidy (₹1.88 lakh crore, FY2022-23), but larger than the entire Central allocation to the National Health Mission. The fiscal case for PM-KISAN rests on its administrative efficiency: the DBT architecture compresses leakage to under 5%, compared to estimated 15–40% leakage in input subsidies delivered through intermediaries.</p>
+    </div>
+
+    <div class="dataviz-bar aos" id="budget-bars">
+      <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;">Annual Budget Allocation — PM-KISAN (₹ Crore)</div>
+      <div class="dvb-row"><div class="dvb-label">FY19-20</div><div class="dvb-track"><div class="dvb-fill" data-width="25" data-val="₹54,370 Cr"></div></div></div>
+      <div class="dvb-row dvb-alt"><div class="dvb-label">FY20-21</div><div class="dvb-track"><div class="dvb-fill" data-width="65" data-val="₹65,000 Cr"></div></div></div>
+      <div class="dvb-row dvb-alt2"><div class="dvb-label">FY21-22</div><div class="dvb-track"><div class="dvb-fill" data-width="67" data-val="₹67,500 Cr"></div></div></div>
+      <div class="dvb-row"><div class="dvb-label">FY22-23</div><div class="dvb-track"><div class="dvb-fill" data-width="68" data-val="₹68,000 Cr"></div></div></div>
+      <div class="dvb-row dvb-alt"><div class="dvb-label">FY23-24</div><div class="dvb-track"><div class="dvb-fill" data-width="60" data-val="₹60,000 Cr"</div></div></div>
+      <div class="dvb-row dvb-alt3"><div class="dvb-label">FY24-25</div><div class="dvb-track"><div class="dvb-fill" data-width="100" data-val="₹75,000 Cr"></div></div></div>
+      <div class="dvb-row dvb-alt3"><div class="dvb-label">FY25-26 BE</div><div class="dvb-track"><div class="dvb-fill" data-width="100" data-val="₹75,000 Cr"></div></div></div>
+    </div>
+
+    <div class="prose-single aos">
+      <p>A critical fiscal blind spot: the ₹6,000 per family annual transfer has <strong>not been revised since the scheme's inception in 2018–19</strong>. Adjusted for CPI inflation (food &amp; beverages), the real value of this transfer has eroded by approximately <strong>22–26%</strong> by FY2025–26. A farmer receiving ₹6,000 today commands the same nominal amount but significantly lower purchasing power in terms of fertilizer, seeds, diesel, or wage labour — the very inputs the transfer is notionally meant to support. This silent devaluation is one of the scheme's most consequential, least-discussed structural deficiencies.</p>
+    </div>
+
+    <div class="fact-box aos">
+      <p><strong>Real Value Erosion Estimate:</strong> ₹6,000 in Feb 2019 ≈ ₹4,560–₹4,680 in Apr 2026 terms (CPI-Agriculture deflated). Indexed to input cost inflation (fertilizer, diesel), the erosion is steeper — estimated 30–35%.</p>
+    </div>
+  </div>
+
+  <div class="ornamental-divider">— ✦ —</div>
+
+  <!-- EXCLUSION ANALYSIS -->
+  <div id="exclusions">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 04</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Structural Exclusion Typology — The Eligibility Matrix</span>
+    </div>
+
+    <div class="pullquote aos">
+      "The question of who is excluded from PM-KISAN is as important as who is included. A scheme reaching 11.5 crore families while systematically excluding the most economically precarious cultivators presents a paradox of scale without equity."
+      <cite>— Policy Inference from CAG 2021, NITI Aayog DBT Assessment 2023</cite>
+    </div>
+
+    <div class="exclusion-diagram aos">
+      <div class="excl-col green">
+        <div class="excl-header">✓ Eligible</div>
+        <ul class="excl-list">
+          <li>Landholding farmer families of all categories</li>
+          <li>Farmers with irrigated or rain-fed cultivable land</li>
+          <li>Urban landholding farmers (if land records exist)</li>
+          <li>Farmers with prior crop loan defaults (KCC)</li>
+          <li>PM-FASAL BIMA enrolled farmers</li>
+          <li>NRI farmers with active land records in India</li>
+        </ul>
+      </div>
+      <div class="excl-col amber">
+        <div class="excl-header">⚠ Conditionally Excluded</div>
+        <ul class="excl-list">
+          <li>Pension earners &gt;₹10,000/month (Central/State)</li>
+          <li>Income tax payees (last assessment year)</li>
+          <li>Ex-constitutional post holders (MLA/MP/etc.)</li>
+          <li>Retired Class I/II officers of Central/State govt.</li>
+          <li>Professional degree holders (active registered)</li>
+          <li>Institutional land operators</li>
+        </ul>
+      </div>
+      <div class="excl-col red-c">
+        <div class="excl-header">✗ Structurally Excluded (Policy Gap)</div>
+        <ul class="excl-list">
+          <li><strong>Tenant farmers</strong> — No land ownership record</li>
+          <li><strong>Sharecroppers</strong> — Oral/informal arrangements</li>
+          <li><strong>Agricultural laborers</strong> — No cultivable land held</li>
+          <li><strong>Women informal cultivators</strong> — Land in male relatives' names</li>
+          <li><strong>Tribal communities</strong> — Community land, no individual title</li>
+          <li><strong>Displaced &amp; landless migrants</strong> — No permanent land records</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prose-single aos">
+      <p>The structural exclusion of tenant farmers and sharecroppers — estimated to constitute 28–33% of India's actual cultivators — represents the scheme's most consequential design flaw. This cohort operates land they do not own, often under informal verbal arrangements that generate no documented trail. They bear identical agricultural risks (crop failure, input cost spikes, price volatility) as landholding farmers but receive no income support from PM-KISAN, and are similarly excluded from KCC (which requires land as collateral) and PM-FASAL BIMA (which requires a crop loan or KCC). The result is a structural coverage gap that correlates with economic precarity: <strong>those excluded are disproportionately from scheduled caste and scheduled tribe communities</strong>, particularly in Andhra Pradesh, Telangana, West Bengal, and Eastern UP.</p>
+    </div>
+  </div>
+
+  <!-- STATE PERFORMANCE -->
+  <div>
+    <div class="section-rule">
+      <span class="section-rule-num">§ 05</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">State-Level Implementation Heatmap</span>
+    </div>
+
+    <div class="prose-single aos" style="margin-bottom:1rem;">
+      <p>Performance varies significantly across states, driven by land record digitization quality, Aadhaar-bank seeding rates, and state agriculture department capacity. Darker shading indicates higher estimated coverage/performance based on publicly available PM-KISAN dashboard data, NITI Aayog DBT reports, and state agriculture budgets.</p>
+    </div>
+
+    <div class="state-grid aos" id="state-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div style="display:flex;gap:1rem;align-items:center;margin-top:0.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);">
+      <span style="display:flex;align-items:center;gap:0.3rem;"><span style="width:12px;height:12px;background:#1a3a5c;display:inline-block;"></span> High Coverage (>85%)</span>
+      <span style="display:flex;align-items:center;gap:0.3rem;"><span style="width:12px;height:12px;background:#6b8fa8;display:inline-block;"></span> Medium (65–85%)</span>
+      <span style="display:flex;align-items:center;gap:0.3rem;"><span style="width:12px;height:12px;background:#b0c4d4;display:inline-block;"></span> Low (&lt;65%)</span>
+      <span style="display:flex;align-items:center;gap:0.3rem;"><span style="width:12px;height:12px;background:#e8d5bc;display:inline-block;"></span> Data Gap</span>
+    </div>
+  </div>
+
+  <!-- SCORING -->
+  <div id="scoring">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 06</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Multidimensional Performance Scoring Model</span>
+    </div>
+
+    <div class="scoring-layout">
+      <div class="radar-wrap aos">
+        <canvas id="radarChart" width="340" height="300"></canvas>
+        <div class="score-legend" id="score-legend">
+          <div class="score-row">
+            <div class="score-row-label">Coverage</div>
+            <div class="score-track"><div class="score-fill" style="background:var(--blue-gov);" data-width="85"></div></div>
+            <div class="score-num">17/20</div>
+          </div>
+          <div class="score-row">
+            <div class="score-row-label">Efficiency</div>
+            <div class="score-track"><div class="score-fill" style="background:var(--teal);" data-width="80"></div></div>
+            <div class="score-num">16/20</div>
+          </div>
+          <div class="score-row">
+            <div class="score-row-label">Outcome Effectiveness</div>
+            <div class="score-track"><div class="score-fill" style="background:var(--gold);" data-width="70"></div></div>
+            <div class="score-num">14/20</div>
+          </div>
+          <div class="score-row">
+            <div class="score-row-label">Transparency</div>
+            <div class="score-track"><div class="score-fill" style="background:var(--red);" data-width="90"></div></div>
+            <div class="score-num">18/20</div>
+          </div>
+          <div class="score-row">
+            <div class="score-row-label">Implementation Quality</div>
+            <div class="score-track"><div class="score-fill" style="background:#8b4513;" data-width="75"></div></div>
+            <div class="score-num">15/20</div>
+          </div>
+        </div>
+        <div class="score-card-total">
+          <div class="val"><span id="count-score">0</span><small>/100</small></div>
+          <div class="grade">Overall Policy Score · B+ Grade</div>
+        </div>
+      </div>
+
+      <div class="score-details">
+        <div class="score-detail-item">
+          <div class="score-detail-label">Coverage · 17/20</div>
+          <div class="score-detail-score">High</div>
+          <div class="score-detail-note">Reaches ~90%+ of landholding farmer families. Structural exclusion of tenant farmers (≈30% of all cultivators) and tribal communities with community land titles prevents a perfect score. Geographic coverage is near-universal across 28 states and 8 UTs.</div>
+        </div>
+        <div class="score-detail-item">
+          <div class="score-detail-label">Efficiency · 16/20</div>
+          <div class="score-detail-score">High</div>
+          <div class="score-detail-note">DBT architecture keeps administrative overhead and leakage at under 5% of total disbursement — dramatically better than subsidy routing models. However, annual e-KYC compliance costs (CSC fees, travel) create regressive transaction costs for remote beneficiaries.</div>
+        </div>
+        <div class="score-detail-item">
+          <div class="score-detail-label">Outcome Effectiveness · 14/20</div>
+          <div class="score-detail-score">Medium</div>
+          <div class="score-detail-note">Robust evidence for short-term consumption smoothing (especially in lean agricultural seasons), modest reduction in distress asset sales, and improved rural credit utilization via KCC synergy. Weak evidence for net farm income growth, debt reduction, or investment in productive assets. NABARD NAFIS 2022 survey found PM-KISAN used primarily for food, healthcare &amp; education — not farm capital expenditure.</div>
+        </div>
+        <div class="score-detail-item">
+          <div class="score-detail-label">Transparency · 18/20</div>
+          <div class="score-detail-score">Very High</div>
+          <div class="score-detail-note">Public beneficiary dashboard with state/district/village drilldown; installment-level payment tracking; open API for verification; PFMS integration for fund flow tracking. Highest transparency score among Central Sector farm schemes.</div>
+        </div>
+        <div class="score-detail-item">
+          <div class="score-detail-label">Implementation Quality · 15/20</div>
+          <div class="score-detail-score">Good</div>
+          <div class="score-detail-note">Efficient DBT routing constrained by: (a) state land record digitization gaps in 11+ states; (b) Aadhaar-bank account mismatch causing 3–7% payment failures per installment cycle; (c) no formal SLA for grievance resolution; (d) periodic deduplication causing temporary benefit suspension affecting millions of genuine farmers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornamental-divider">— ✦ —</div>
+
+  <!-- SCHEME OVERLAP -->
+  <div id="overlap">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 07</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Inter-Scheme Overlap &amp; Convergence Analysis</span>
+    </div>
+
+    <table class="comp-table aos">
+      <thead>
+        <tr>
+          <th>Scheme</th>
+          <th>Beneficiary Overlap</th>
+          <th>Benefit Overlap</th>
+          <th>Ministry</th>
+          <th>Convergence Assessment</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>PMFBY</strong><br>PM Fasal Bima Yojana</td>
+          <td>High — same landholding farmer pool</td>
+          <td>Low — Risk insurance vs. cash income</td>
+          <td>MoA&amp;FW</td>
+          <td><span class="tag tag-comp">Complementary</span> PM-KISAN provides income floor; PMFBY covers climate shock. Combined they address income &amp; risk.</td>
+          <td>Unified farmer ID for cross-enrollment. PM-KISAN installment timing aligned with kharif/rabi premium payment schedule.</td>
+        </tr>
+        <tr>
+          <td><strong>KCC / Interest Subvention</strong><br>Kisan Credit Card</td>
+          <td>High — landholding cultivators</td>
+          <td>Medium — credit vs. cash</td>
+          <td>Agriculture / Finance</td>
+          <td><span class="tag tag-comp">Synergistic</span> PM-KISAN improves loan repayment capacity; KCC provides working capital. No duplication of benefit type.</td>
+          <td>Link PM-KISAN payment calendar to KCC repayment schedule to reduce default rates. Explore PM-KISAN as de facto collateral signal.</td>
+        </tr>
+        <tr>
+          <td><strong>PM-KUSUM</strong><br>Solar Pump Scheme</td>
+          <td>Medium — farm electrification overlap</td>
+          <td>Low — infrastructure subsidy vs. cash</td>
+          <td>MNRE / MoA&amp;FW</td>
+          <td><span class="tag tag-neutral">Targeted</span> No benefit duplication. Reduces input cost for PM-KISAN beneficiaries but serves different need.</td>
+          <td>Land title verification can be shared database. PM-KUSUM beneficiaries to be prioritized in PM-KISAN Aadhaar seeding drives.</td>
+        </tr>
+        <tr>
+          <td><strong>MGNREGA</strong></td>
+          <td>Low-Medium — different primary target</td>
+          <td>None — wage employment vs. cash transfer</td>
+          <td>Rural Development</td>
+          <td><span class="tag tag-gap">Coverage Gap</span> Tenant farmers excluded from PM-KISAN fall into grey zone: may qualify for MGNREGA but with no farm-specific income support. Cross-scheme exclusion gap.</td>
+          <td>Immediate: Map tenant/sharecropper cohort from MGNREGA Job Cards for a PM-KISAN-equivalent scheme. Medium-term: PM-KISAN extension to registered cultivators without formal land title.</td>
+        </tr>
+        <tr>
+          <td><strong>PM Annadata Aay SanraksHan Abhiyan (PM-AASHA)</strong></td>
+          <td>High — price support for same farmers</td>
+          <td>Medium — price floor vs. cash</td>
+          <td>MoA&amp;FW</td>
+          <td><span class="tag tag-comp">Complementary</span> PM-AASHA protects against revenue crash below MSP; PM-KISAN provides baseline income independent of sale. Jointly address different risk vectors.</td>
+          <td>Unified Farmer Welfare Dashboard combining PM-KISAN, PM-AASHA, and PMFBY payout status in single interface.</td>
+        </tr>
+        <tr>
+          <td><strong>PMGSY / RURBAN Mission</strong></td>
+          <td>Low — rural infrastructure, not farmer-specific</td>
+          <td>None</td>
+          <td>Rural Development</td>
+          <td><span class="tag tag-neutral">No Overlap</span> Infrastructure and market access improvement. Indirect positive externality for PM-KISAN farmers in terms of market reach.</td>
+          <td>Road connectivity improvements unlock monetization of PM-KISAN-induced agricultural surplus. No direct convergence needed.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="fact-box aos">
+      <p><strong>Critical Inter-Ministerial Silo:</strong> PM-KISAN (MoA&amp;FW), MGNREGA (MoRD), PMFBY (MoA&amp;FW), and KCC (Finance/Agriculture) maintain entirely separate beneficiary databases with no real-time cross-mapping. The result: a tenant farmer may be simultaneously enrolled in MGNREGA, hold a crop loan, and have no income support — invisible to all three schemes as a unified welfare subject. A National Farmer Welfare ID (FarmerID) linked to land records, UIDAI, and bank accounts would eliminate this silo and enable genuine convergence.</p>
+    </div>
+  </div>
+
+  <!-- GLOBAL COMPARISON -->
+  <div id="global">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 08</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Global Benchmarking — Agricultural Income Support</span>
+    </div>
+
+    <div class="prose-single aos">
+      <p>PM-KISAN's design borrows from a global tradition of agricultural direct payments, but its parameters — amount, conditionality, targeting — differ significantly from comparable programmes. The following analysis benchmarks PM-KISAN against four international models across key design dimensions.</p>
+    </div>
+
+    <table class="global-table aos">
+      <thead>
+        <tr>
+          <th>Country / Programme</th>
+          <th>Annual Transfer (USD equiv.)</th>
+          <th>Conditionality</th>
+          <th>Targeting</th>
+          <th>Inflation Indexed?</th>
+          <th>Tenant Coverage</th>
+          <th>Key Lesson for India</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="country-flag">🇮🇳</span><strong>India — PM-KISAN</strong></td>
+          <td>≈ USD 72/yr (₹6,000)</td>
+          <td>None (unconditional)</td>
+          <td>Land ownership</td>
+          <td>No</td>
+          <td>Excluded</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="country-flag">🇺🇸</span><strong>USA — Agricultural Risk Coverage (ARC)</strong></td>
+          <td>Variable ($50–$200/acre)</td>
+          <td>Crop history, FSA registration</td>
+          <td>Historical cropland base</td>
+          <td>Partially (market-linked)</td>
+          <td>Included (operators)</td>
+          <td>Operator-based (not just ownership) eligibility includes tenant farmers. India could adopt cultivator-registration model.</td>
+        </tr>
+        <tr>
+          <td><span class="country-flag">🇧🇷</span><strong>Brazil — PRONAF</strong></td>
+          <td>Variable credit + subsidy</td>
+          <td>DAP card (farmer registration)</td>
+          <td>Family farmer declaration</td>
+          <td>Yes (credit-rate indexed)</td>
+          <td>Included (DAP covers renters)</td>
+          <td>Declaration-based eligibility system (Declaração de Aptidão ao PRONAF) covers renters/sharecroppers. India could extend PM-KISAN via cultivator declaration + gram panchayat attestation.</td>
+        </tr>
+        <tr>
+          <td><span class="country-flag">🇵🇰</span><strong>Pakistan — PM's Kissan Package</strong></td>
+          <td>≈ USD 60/yr (PKR ~16,000)</td>
+          <td>None</td>
+          <td>Landholding, &lt;12.5 acres</td>
+          <td>No</td>
+          <td>Excluded</td>
+          <td>Similar structural limitations to PM-KISAN. Both exclude tenant farmers and lack inflation indexation — parallel policy failures.</td>
+        </tr>
+        <tr>
+          <td><span class="country-flag">🇪🇺</span><strong>EU — Common Agricultural Policy (CAP) — Basic Payment</strong></td>
+          <td>≈ EUR 200–400/hectare/yr</td>
+          <td>Cross-compliance (environmental)</td>
+          <td>Agricultural activity</td>
+          <td>Yes (multi-year financial framework)</td>
+          <td>Included (active farmers)</td>
+          <td>Activity-based (not just land ownership) targeting, inflation linkage, environmental conditionality. Most sophisticated model. India's DBT infrastructure could accommodate graduated, activity-linked payment tiers long-term.</td>
+        </tr>
+        <tr>
+          <td><span class="country-flag">🇨🇳</span><strong>China — Agricultural Subsidy Consolidation Programme</strong></td>
+          <td>Variable; ≈ CNY 500–2000/yr</td>
+          <td>Land contract, crop cultivation</td>
+          <td>Contracted agricultural land</td>
+          <td>Annually revised</td>
+          <td>Included (land contractors)</td>
+          <td>China's land contract system (as opposed to ownership) inherently covers most cultivators. India's absence of a cultivator contract framework is the root structural barrier.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DEBATE -->
+  <div id="debate">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 09</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Policy Debate — The Case For &amp; Against PM-KISAN</span>
+    </div>
+
+    <div class="debate-grid aos">
+      <div class="debate-col">
+        <div class="debate-header">✦ Affirmative: Case For PM-KISAN</div>
+        <div class="debate-item"><span class="debate-icon">1.</span><span><strong>Unrivalled DBT Scale:</strong> No other government scheme has delivered direct cash to 11+ crore families with this velocity and transparency. PM-KISAN de-risked DBT-at-scale as a delivery model for India.</span></div>
+        <div class="debate-item"><span class="debate-icon">2.</span><span><strong>Consumption Smoothing Works:</strong> Multiple micro-studies (RBI, IFPRI, NCAER) confirm installment receipts correlate with reduced distress borrowing in lean months (May–June, October–November).</span></div>
+        <div class="debate-item"><span class="debate-icon">3.</span><span><strong>Financial Inclusion Spillover:</strong> PM-KISAN's Aadhaar-bank seeding mandate drove formal bank account penetration in rural India far beyond its own scope, with ~4 crore new Jan Dhan accounts opened in 2019–2021 partly attributable to PM-KISAN enrollment drives.</span></div>
+        <div class="debate-item"><span class="debate-icon">4.</span><span><strong>Low Administrative Cost:</strong> Cost-per-beneficiary administrative overhead estimated at &lt;2% of total outlay — far superior to procurement-based welfare schemes with 15–25% administrative leakage.</span></div>
+        <div class="debate-item"><span class="debate-icon">5.</span><span><strong>Universal Dignity:</strong> Unconditional cash preserves farmer agency over expenditure choice — healthcare, education, input purchase — without bureaucratic gatekeeping of spending categories.</span></div>
+      </div>
+      <div class="debate-col">
+        <div class="debate-header">✦ Critical: Case Against PM-KISAN</div>
+        <div class="debate-item"><span class="debate-icon">1.</span><span><strong>Inadequate Quantum:</strong> ₹6,000/year equates to ₹16.4/day per household — insufficient to materially alter agricultural economics. This covers barely 3–4 bags of urea, or 2 days of agricultural labour at MGNREGA rates.</span></div>
+        <div class="debate-item"><span class="debate-icon">2.</span><span><strong>Systemic Tenant Exclusion:</strong> The scheme privileges land ownership in a country where land rights remain deeply inequitable across caste, gender, and tribal lines. 30% of cultivators are categorically excluded.</span></div>
+        <div class="debate-item"><span class="debate-icon">3.</span><span><strong>No Debt Impact:</strong> NABARD NAFIS surveys consistently show PM-KISAN has not materially reduced farmer indebtedness. The ₹74,000 average household debt dwarfs the ₹6,000 annual transfer by 12x.</span></div>
+        <div class="debate-item"><span class="debate-icon">4.</span><span><strong>Political Economy Concerns:</strong> Critics argue PM-KISAN's timing (pre-election launch, pre-election installment disbursements) reflects electoral calculus over agrarian development strategy — a "welfare cheque" model without structural agricultural reform.</span></div>
+        <div class="debate-item"><span class="debate-icon">5.</span><span><strong>Substitution for Reform:</strong> Resources committed to PM-KISAN (₹75k Cr/yr) could theoretically fund more transformative investments in cold chain infrastructure, irrigation, crop diversification incentives, or input cost reduction programmes.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLICY RECOMMENDATIONS -->
+  <div id="recs">
+    <div class="section-rule">
+      <span class="section-rule-num">§ 10</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Evidence-Based Policy Recommendations</span>
+    </div>
+
+    <div class="recs-grid aos">
+      <div class="rec-card">
+        <div class="rec-num">01</div>
+        <div class="rec-priority priority-high">■ Critical Priority</div>
+        <div class="rec-title">Inflation-Index the Transfer</div>
+        <div class="rec-body">Link ₹6,000/year quantum to CPI-Agriculture index with annual revision, similar to MGNREGA wage indexation. Estimated fiscal impact: ₹4,000–₹8,000 Cr additional per year, recoverable through deduplication savings.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">02</div>
+        <div class="rec-priority priority-high">■ Critical Priority</div>
+        <div class="rec-title">Extend to Tenant Farmers via Cultivator Declaration</div>
+        <div class="rec-body">Introduce PM-KISAN-Tenant variant: gram panchayat-attested cultivator declaration + Aadhaar KYC enables coverage without land title. Model on Brazil's DAP system. Target: additional 3–4 Cr tenant farmer families.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">03</div>
+        <div class="rec-priority priority-high">■ Critical Priority</div>
+        <div class="rec-title">National Farmer Welfare ID (FarmerID)</div>
+        <div class="rec-body">Unified farmer ID linking PM-KISAN, KCC, PMFBY, PM-AASHA under one digital identity. Eliminates inter-ministerial data silos, enables accurate coverage analytics, and removes redundant KYC burden on beneficiaries.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">04</div>
+        <div class="rec-priority priority-med">◆ Medium Priority</div>
+        <div class="rec-title">Grievance SLA Mandate</div>
+        <div class="rec-body">Legislate a 30-day resolution SLA for PM-KISAN grievances with automatic escalation and compensation for proven administrative delay. Currently, there is no enforceable redressal timeline.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">05</div>
+        <div class="rec-priority priority-med">◆ Medium Priority</div>
+        <div class="rec-title">Graduated Benefit Tier (Climate Vulnerability)</div>
+        <div class="rec-body">Introduce a climate vulnerability supplement for farmers in PMFBY high-risk zones (drought/flood-prone districts). A supplementary ₹2,000/year transfer to ~2 Cr high-risk farmers is estimated to reduce distress borrowing by 18%.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">06</div>
+        <div class="rec-priority priority-low">● Long-Term</div>
+        <div class="rec-title">Convergence Portal — Joint Farm Welfare Dashboard</div>
+        <div class="rec-body">Integrate PM-KISAN, PMFBY, KCC, and PM-AASHA into a unified farmer welfare portal with household-level analytics. Enable state governments to identify multi-scheme enrolled families and those with zero-scheme coverage.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA RELIABILITY -->
+  <div>
+    <div class="section-rule">
+      <span class="section-rule-num">§ 11</span>
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Data Reliability &amp; Evidence Base Assessment</span>
+    </div>
+
+    <div class="prose aos">
+      <p>The PM-KISAN evidence base is unusually strong for an Indian welfare programme at the output level — payment volumes, beneficiary counts, and DBT transaction success rates are tracked in near-real-time via the public portal and PFMS. The scheme's fund flow is among the most transparent in the Central government's welfare portfolio.</p>
+      <p>However, outcome-level evidence — impact on farm income, debt, consumption, or investment — relies on survey instruments (NABARD NAFIS, NSSO, CMIE) with significant methodological heterogeneity and survey frequency limitations. Most impact estimates are from 2019–2021 data, predating the scheme's maturation. A dedicated panel survey tracking PM-KISAN beneficiary households across 5+ years, conducted by an independent institution, would dramatically strengthen the evidence base for scheme revision decisions.</p>
+      <p>A critical data gap: there is no official estimate of the tenant farmer population excluded from PM-KISAN with the granularity needed for policy intervention design. The 30% estimate is a synthesis from NSSO land use surveys, the Agriculture Census, and NABARD NAFIS — but state-level disaggregation of tenant cultivator counts with socioeconomic profiling is absent from any official database as of April 2026.</p>
+      <p>Conflicting information persists on active beneficiary counts: the PM-KISAN portal, Union Budget documents, and CAG reports present differing figures due to definitional differences between enrolled, verified, and payment-received beneficiaries — a data governance issue requiring formal reconciliation.</p>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;">Primary Sources &amp; Evidence Quality</div>
+      <div class="sources-grid">
+        <div class="source-item"><span class="src-num">[01]</span> PM-KISAN Official Portal (pmkisan.gov.in) — Real-time installment &amp; beneficiary data</div>
+        <div class="source-item"><span class="src-num">[02]</span> Union Budget Documents 2019–2026 — Budget &amp; Revised Estimates</div>
+        <div class="source-item"><span class="src-num">[03]</span> CAG Report No. 20/2021 — Performance Audit; ineligible payment findings</div>
+        <div class="source-item"><span class="src-num">[04]</span> NABARD NAFIS 2022 — Rural household income &amp; PM-KISAN utilization survey</div>
+        <div class="source-item"><span class="src-num">[05]</span> NITI Aayog DBT Assessment 2023 — Implementation quality benchmarking</div>
+        <div class="source-item"><span class="src-num">[06]</span> RBI DBT Annual Reports 2020–2025 — Payment infrastructure analysis</div>
+        <div class="source-item"><span class="src-num">[07]</span> MoA&amp;FW Annual Reports 2019–2025 — Programme operational data</div>
+        <div class="source-item"><span class="src-num">[08]</span> IFPRI Working Papers (2020, 2022) — Impact assessment studies</div>
+        <div class="source-item"><span class="src-num">[09]</span> NCAER Rural Economic Outlook — Consumption impact modeling</div>
+        <div class="source-item"><span class="src-num">[10]</span> Agriculture Census 2015–16 &amp; 2019–20 — Landholding structure baseline</div>
+        <div class="source-item"><span class="src-num">[11]</span> PFMS (Public Financial Management System) — Fund flow verification</div>
+        <div class="source-item"><span class="src-num">[12]</span> FAO Agricultural Policy Briefs — Global benchmarking comparatives</div>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- /main-wrapper -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">PM-<span>KISAN</span></div>
+      <div class="footer-brand" style="font-size:1rem;color:rgba(245,240,232,0.4);font-style:italic;margin-top:0.2rem;">Policy Intelligence Report</div>
+      <div class="footer-desc">A comprehensive, independently researched analytical brief on the Pradhan Mantri Kisan Samman Nidhi scheme — covering design architecture, fiscal analysis, exclusion typology, implementation quality, global benchmarking, and evidence-based policy recommendations.</div>
+      <div style="margin-top:1.5rem;">
+        <div class="creator-credit">Created by Kallol Chakrabarti</div>
+        <div class="creator-role">Global Independent Researcher</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Scheme Parameters</div>
+      <ul>
+        <li>Launch: Feb 2019</li>
+        <li>Budget: ₹75,000 Cr/yr</li>
+        <li>Type: Central Sector (100%)</li>
+        <li>Delivery: DBT · Aadhaar-linked</li>
+        <li>Installments: 3 × ₹2,000</li>
+        <li>Coverage: ~11.5 Cr families</li>
+        <li>Ministry: MoA&amp;FW</li>
+        <li>Score: 80/100</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Report Contents</div>
+      <ul>
+        <li>§01 Policy Context</li>
+        <li>§02 Chronological Ledger</li>
+        <li>§03 Fiscal Architecture</li>
+        <li>§04 Exclusion Typology</li>
+        <li>§05 State Heatmap</li>
+        <li>§06 Scoring Model</li>
+        <li>§07 Scheme Overlap</li>
+        <li>§08 Global Benchmark</li>
+        <li>§09 Policy Debate</li>
+        <li>§10 Recommendations</li>
+        <li>§11 Data Reliability</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>
+      <p>Dataset Version: 2.0 · Classification: Open Policy Research · Last Verified: April 21, 2026</p>
+      <p style="margin-top:0.3rem;">Sources: Union Budget (2019–2026), PIB, MoA&amp;FW Portal, NITI Aayog, CAG Reports, RBI, NABARD NAFIS, IFPRI, NCAER, Agriculture Census</p>
+    </div>
+    <div style="text-align:right;">
+      <p>© 2026 Kallol Chakrabarti · Global Independent Researcher</p>
+      <p style="margin-top:0.3rem;">For academic, policy, and public interest use.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ─── ANIMATED COUNTERS ─── */
+  function animateCount(id, target, decimals, duration) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const val = (target * ease).toFixed(decimals);
+      el.textContent = val;
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toFixed(decimals);
+    };
+    requestAnimationFrame(step);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      animateCount('count-beneficiaries', 11.5, 1, 1800);
+      animateCount('count-spent', 3.24, 2, 2000);
+      animateCount('count-installments', 15, 0, 1500);
+      animateCount('count-score', 80, 0, 2200);
+    }, 400);
+  });
+
+  /* ─── KPI BAR ANIMATION ─── */
+  const kpiStrip = document.getElementById('kpi-strip');
+  const kpiBars = document.querySelectorAll('.kpi-bar');
+  const kpiObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      kpiBars.forEach(bar => {
+        const w = bar.getAttribute('data-width');
+        setTimeout(() => bar.style.width = w + '%', 300);
+      });
+      kpiObs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  if (kpiStrip) kpiObs.observe(kpiStrip);
+
+  /* ─── SCORE BAR ANIMATION ─── */
+  function animateScoreBars() {
+    document.querySelectorAll('.score-fill').forEach(fill => {
+      const w = fill.getAttribute('data-width');
+      if (w) fill.style.width = w + '%';
+    });
+  }
+
+  const scoreLegend = document.getElementById('score-legend');
+  const scoreObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) { animateScoreBars(); scoreObs.disconnect(); }
+  }, { threshold: 0.3 });
+  if (scoreLegend) scoreObs.observe(scoreLegend);
+
+  /* ─── BUDGET BARS ─── */
+  const budgetSection = document.getElementById('budget-bars');
+  const budgetObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      document.querySelectorAll('.dvb-fill').forEach(fill => {
+        const w = fill.getAttribute('data-width');
+        if (w) fill.style.width = w + '%';
+      });
+      budgetObs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  if (budgetSection) budgetObs.observe(budgetSection);
+
+  /* ─── RADAR CHART ─── */
+  window.addEventListener('load', () => {
+    const canvas = document.getElementById('radarChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2 + 10;
+    const R = Math.min(W, H) * 0.38;
+    const labels = ['Coverage', 'Efficiency', 'Outcome', 'Transparency', 'Impl. Quality'];
+    const scores = [0.85, 0.80, 0.70, 0.90, 0.75];
+    const N = labels.length;
+    const ink = '#0d0c0a';
+    const rule = '#c9bfaa';
+    const gold = '#d4a017';
+    const paper = '#f5f0e8';
+
+    function getPoint(i, r) {
+      const angle = (Math.PI * 2 * i / N) - Math.PI / 2;
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    }
+
+    let progress = 0;
+    const duration = 2000;
+    const startTime = performance.now();
+
+    function draw(now) {
+      progress = Math.min((now - startTime) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      ctx.clearRect(0, 0, W, H);
+
+      // Grid rings
+      [0.25, 0.5, 0.75, 1].forEach(frac => {
+        ctx.beginPath();
+        for (let i = 0; i < N; i++) {
+          const [x, y] = getPoint(i, R * frac);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = rule;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // Spokes
+      for (let i = 0; i < N; i++) {
+        const [x, y] = getPoint(i, R);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = rule;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Score polygon
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const [x, y] = getPoint(i, R * scores[i] * ease);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(183,134,11,0.18)';
+      ctx.fill();
+      ctx.strokeStyle = gold;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Dots
+      for (let i = 0; i < N; i++) {
+        const [x, y] = getPoint(i, R * scores[i] * ease);
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = gold;
+        ctx.fill();
+        ctx.strokeStyle = paper;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Labels
+      ctx.font = '500 10px "Barlow Condensed", sans-serif';
+      ctx.letterSpacing = '1px';
+      for (let i = 0; i < N; i++) {
+        const [x, y] = getPoint(i, R + 22);
+        ctx.fillStyle = ink;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(labels[i].toUpperCase(), x, y);
+      }
+
+      if (progress < 1) requestAnimationFrame(draw);
+    }
+
+    const radarObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        requestAnimationFrame(draw);
+        radarObs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    radarObs.observe(canvas);
+  });
+
+  /* ─── TIMELINE ANIMATION ─── */
+  const tlItems = document.querySelectorAll('.tl-item');
+  const tlObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+  tlItems.forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.08) + 's';
+    tlObs.observe(item);
+  });
+
+  /* ─── AOS SCROLL ANIMATION ─── */
+  const aosEls = document.querySelectorAll('.aos');
+  const aosObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        aosObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  aosEls.forEach(el => aosObs.observe(el));
+
+  /* ─── TOC DOTS ─── */
+  function scrollTo(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  const sections = ['#masthead', '#context', '#timeline', '#financials', '#exclusions', '#scoring', '#overlap', '#global', '#debate', '#recs'];
+  const dots = document.querySelectorAll('.toc-dot');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + window.innerHeight * 0.4;
+    let active = 0;
+    sections.forEach((sel, i) => {
+      const el = document.querySelector(sel);
+      if (el && el.offsetTop <= scrollY) active = i;
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+  });
+
+  /* ─── STATE GRID ─── */
+  const states = [
+    { name: 'UP', val: '92%', level: 'high' },
+    { name: 'MP', val: '91%', level: 'high' },
+    { name: 'RAJ', val: '89%', level: 'high' },
+    { name: 'GUJ', val: '88%', level: 'high' },
+    { name: 'HAR', val: '87%', level: 'high' },
+    { name: 'PUN', val: '86%', level: 'high' },
+    { name: 'MH', val: '85%', level: 'high' },
+    { name: 'AP', val: '84%', level: 'high' },
+    { name: 'TEL', val: '83%', level: 'high' },
+    { name: 'KAR', val: '81%', level: 'medium' },
+    { name: 'TN', val: '80%', level: 'medium' },
+    { name: 'OR', val: '79%', level: 'medium' },
+    { name: 'JHK', val: '77%', level: 'medium' },
+    { name: 'CG', val: '76%', level: 'medium' },
+    { name: 'BIH', val: '74%', level: 'medium' },
+    { name: 'KER', val: '72%', level: 'medium' },
+    { name: 'UK', val: '71%', level: 'medium' },
+    { name: 'HP', val: '70%', level: 'medium' },
+    { name: 'ASM', val: '68%', level: 'medium' },
+    { name: 'WB', val: '65%', level: 'medium' },
+    { name: 'J&K', val: '62%', level: 'low' },
+    { name: 'MNP', val: '58%', level: 'low' },
+    { name: 'MEG', val: '54%', level: 'low' },
+    { name: 'NAG', val: '52%', level: 'low' },
+    { name: 'ARU', val: '48%', level: 'low' },
+    { name: 'MIZ', val: '44%', level: 'low' },
+    { name: 'SIK', val: '62%', level: 'low' },
+    { name: 'GOA', val: '71%', level: 'medium' },
+    { name: 'DEL', val: '—', level: 'gap' },
+    { name: 'PUD', val: '81%', level: 'medium' },
+  ];
+
+  const colorMap = {
+    high: '#1a3a5c',
+    medium: '#6b8fa8',
+    low: '#b0c4d4',
+    gap: '#e8d5bc'
+  };
+
+  const textMap = {
+    high: '#f5f0e8',
+    medium: '#f5f0e8',
+    low: '#0d0c0a',
+    gap: '#6b6456'
+  };
+
+  const grid = document.getElementById('state-grid');
+  if (grid) {
+    states.forEach(s => {
+      const cell = document.createElement('div');
+      cell.className = 'state-cell';
+      cell.style.background = colorMap[s.level];
+      cell.style.color = textMap[s.level];
+      cell.title = `${s.name}: ~${s.val} coverage (estimated)`;
+      cell.innerHTML = `<span class="sname">${s.name}</span><span class="sval">${s.val}</span>`;
+      grid.appendChild(cell);
+    });
+  }
+</script>
+</body>
+</html>
